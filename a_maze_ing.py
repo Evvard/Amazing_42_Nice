@@ -20,6 +20,9 @@ def main() -> None:
         return
 
     print(config)
+    # config ok
+
+
 
 if __name__ == "__main__":
     main()

@@ -1,9 +1,8 @@
-def main() -> None:
-    try:
-        int("s")
-        print("ok")
-    except ValueError:
-        print("error")
+def main():
+    tt = "cytfwfd"
+    if isinstance(tt, str):
+        print("test ok")
+
 
 
 main()

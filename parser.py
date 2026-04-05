@@ -1,5 +1,5 @@
 from typing import Any, Optional, Dict
-from random import randint
+# version_correcte
 
 
 def parse_type_value(value: Any) -> int | str | float:
@@ -12,10 +12,12 @@ def parse_type_value(value: Any) -> int | str | float:
         return value
 
 
-def extraction_config() -> dict:
+def extraction_config(entry: str) -> Optional[Dict[str, Any] | str]:
     try:
+        if entry != "config.txt":
+            raise FileNotFoundError
         data = dict({})
-        with open("config.txt", 'r') as file:
+        with open(entry, 'r') as file:
             for line in file:
                 try:
                     line = line.strip()
@@ -27,7 +29,7 @@ def extraction_config() -> dict:
                 except ValueError:
                     pass
     except FileNotFoundError or PermissionError:
-        print("Missing file")
+        return "MISSING CONFIG.TXT"
     return data
 
 
@@ -43,7 +45,7 @@ def config_validator(data: dict) -> Optional[Dict[str, Any] | str]:
             if value_w <= 0 or value_w >= 100:
                 raise ValueError
             config.update({"WIDTH": value_w})
-        except ValueError | KeyError | TypeError:
+        except (ValueError, KeyError, TypeError):
             return "WIDTH"
 
     if "HEIGHT" in config.keys():
@@ -54,8 +56,8 @@ def config_validator(data: dict) -> Optional[Dict[str, Any] | str]:
             value_h = int(height)
             if value_h <= 0 or value_h >= 100:
                 raise ValueError
-            config.update({"WIDTH": value_h})
-        except ValueError | KeyError | TypeError:
+            config.update({"HEIGHT": value_h})
+        except (ValueError, KeyError, TypeError):
             return "HEIGHT"
 
     if "ENTRY" in config.keys():
@@ -63,17 +65,16 @@ def config_validator(data: dict) -> Optional[Dict[str, Any] | str]:
     else:
         try:
             entry = data.get("ENTRY")
-            value_entry = float(entry)
-            value_str = str(value_entry).replace('.', ',')
-            [value_en] = value_str.split(',')
+            value_str = str(entry).replace('.', ',')
+            value_en = value_str.split(',')
             value_en[0] = int(value_en[0])
             value_en[1] = int(value_en[1])
-            if value_en[0] <= 0 or value_en[0] >= 100:
+            if value_en[0] < 0 or value_en[0] > 100:
                 raise ValueError
-            if value_en[1] <= 0 or value_en[1] >= 100:
+            if value_en[1] < 0 or value_en[1] > 100:
                 raise ValueError
-            config.update({"WIDTH": value_en})
-        except ValueError | KeyError | TypeError:
+            config.update({"ENTRY": value_en})
+        except (ValueError, KeyError, TypeError):
             return "ENTRY"
 
     if "EXIT" in config.keys():
@@ -81,18 +82,17 @@ def config_validator(data: dict) -> Optional[Dict[str, Any] | str]:
     else:
         try:
             exi_t = data.get("EXIT")
-            value_exit = float(exi_t)
-            value_str = str(value_exit).replace('.', ',')
-            [value_ex] = value_str.split(',')
+            value_str = str(exi_t).replace('.', ',')
+            value_ex = value_str.split(',')
             value_ex[0] = int(value_ex[0])
             value_ex[1] = int(value_ex[1])
-            if value_ex[0] <= 0 or value_ex[0] >= 100:
+            if value_ex[0] < 0 or value_ex[0] > 100:
                 raise ValueError
-            if value_ex[1] <= 0 or value_ex[1] >= 100:
+            if value_ex[1] < 0 or value_ex[1] > 100:
                 raise ValueError
-            config.update({"WIDTH": value_ex})
-        except ValueError | KeyError | TypeError:
-            return "ENTRY"
+            config.update({"EXIT": value_ex})
+        except (ValueError, KeyError, TypeError):
+            return "EXIT"
 
     if "PERFECT" in config.keys():
         pass
@@ -105,9 +105,22 @@ def config_validator(data: dict) -> Optional[Dict[str, Any] | str]:
                 config.update({"PERFECT": False})
             else:
                 raise ValueError
-        except ValueError | KeyError | TypeError:
+        except (ValueError, KeyError, TypeError):
             return "PERFECT"
+
+    if "SEED" in config.keys():
+        pass
+    else:
+        try:
+            seed = data.get("SEED")
+            if not data:
+                config.update({"SEED": "NOT_DATA"})
+            else:
+                config.update({"SEED": seed})
+        except KeyError:
+            return "SEED"
 
     if config["ENTRY"] == config["EXIT"]:
         return "ENTRY==EXIT"
+
     return config

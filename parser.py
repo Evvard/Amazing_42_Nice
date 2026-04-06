@@ -109,6 +109,7 @@ def config_validator(data: dict) -> Optional[Dict[str, Any] | str]:
         return "ALGORITHM"
 
     try:
+        # Je ne sais pas le format des seeds donc a modifier plus tard
         seed = data.get("SEED")
         if not data:
             config.update({"SEED": "NOT_DATA"})

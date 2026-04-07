@@ -22,7 +22,7 @@ class MazeGenerator():
     def maze_empty_generation(self) -> None:
         self.maze = [[15 for _ in range(self.width)] for _ in range(self.height)]
 
-    def algo_generation(self) -> None:
+    def visited(self) -> None:
         self.visited = [[False for _ in range(self.width)] for _ in range(self.height)]
 
     def check_case(self, x: int, y: int) -> bool:
@@ -43,5 +43,8 @@ class MazeGenerator():
             valid += [(x, y - 1, "S")]
         return valid
 
-    def bactracking_algorithm(self) -> ?:
-    
+    def bactracking_algorithm(self) -> :
+        self.maze_empty_generation(self)
+        self.visited(self)
+        self.maze[self.entry[1]][self.entry[0]] = 
+        self.maze[self.exit[1]][self.exit[0]] = 

@@ -6,18 +6,12 @@ def main() -> None:
     try:
         brut_data_from_config_txt = extraction_config(argv[1])
     except IndexError:
-        print("Missig argument in argv")
-        return
-
-    if isinstance(brut_data_from_config_txt, str):
-        print(brut_data_from_config_txt)
-        return
+        raise IndexError("Missing file.txt is 2nd argument")
 
     config = config_validator(brut_data_from_config_txt)
 
     if isinstance(config, str):
-        print(f"EntryError: there is on error in config.txt : {config}")
-        return
+        raise ValueError(config)
 
     print(config)
     # config ok
@@ -25,4 +19,7 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as m:
+        print(m)

@@ -19,19 +19,16 @@ def extraction_config(entry: str) -> Optional[Dict[str, Any] | str]:
         data = dict({})
         with open(entry, 'r') as file:
             for line in file:
-                try:
-                    if line.startswith("#"):
-                        continue
-                    line = line.strip()
-                    if "=" in line:
-                        key, value = line.split("=", 1)
-                        data[key] = parse_type_value(value)
-                    else:
-                        raise ValueError
-                except ValueError:
-                    return "INVALID VALUE IN CONFIG.TXT"
+                if line.startswith("#"):
+                    continue
+                line = line.strip()
+                if "=" in line:
+                    key, value = line.split("=", 1)
+                    data[key] = parse_type_value(value)
+                else:
+                    raise ValueError("INVALID VALUE IN CONFIG.TXT")
     except FileNotFoundError or PermissionError:
-        return "MISSING CONFIG.TXT"
+        raise FileNotFoundError("File Missing")
     return data
 
 
@@ -45,8 +42,8 @@ def config_validator(data: dict) -> Optional[Dict[str, Any] | str]:
         if value_w <= 0 or value_w >= 100:
             raise ValueError
         config.update({"WIDTH": value_w})
-    except (ValueError, KeyError, TypeError):
-        return "WIDTH"
+    except (Exception):
+        return "Probleme with WIDTH, min 0, max 100"
 
     try:
         height = data.get("HEIGHT")
@@ -54,8 +51,8 @@ def config_validator(data: dict) -> Optional[Dict[str, Any] | str]:
         if value_h <= 0 or value_h >= 100:
             raise ValueError
         config.update({"HEIGHT": value_h})
-    except (ValueError, KeyError, TypeError):
-        return "HEIGHT"
+    except (Exception):
+        return "Probleme with HEIGHT, min 0, max 100"
 
     try:
         entry = data.get("ENTRY")
@@ -68,8 +65,8 @@ def config_validator(data: dict) -> Optional[Dict[str, Any] | str]:
         if value_en[1] < 0 or value_en[1] > 100:
             raise ValueError
         config.update({"ENTRY": value_en})
-    except (ValueError, KeyError, TypeError):
-        return "ENTRY"
+    except (Exception):
+        return "Probleme with ENTRY value"
 
     try:
         exi_t = data.get("EXIT")
@@ -82,11 +79,11 @@ def config_validator(data: dict) -> Optional[Dict[str, Any] | str]:
         if value_ex[1] < 0 or value_ex[1] > 100:
             raise ValueError
         config.update({"EXIT": value_ex})
-    except (ValueError, KeyError, TypeError):
-        return "EXIT"
+    except (Exception):
+        return "Probleme with EXIT value "
 
     if config["ENTRY"] == config["EXIT"]:
-        return "ENTRY==EXIT"
+        return "Probleme with Entry because EXIT == ENTRY"
 
     try:
         perfect = data.get("PERFECT")
@@ -96,8 +93,8 @@ def config_validator(data: dict) -> Optional[Dict[str, Any] | str]:
             config.update({"PERFECT": False})
         else:
             raise ValueError
-    except (ValueError, KeyError, TypeError):
-        return "PERFECT"
+    except (Exception):
+        return "Probleme with PERFECT flag, juste write FALSE or TRUE"
 
     try:
         algo = data.get("ALGORITHM")
@@ -107,7 +104,7 @@ def config_validator(data: dict) -> Optional[Dict[str, Any] | str]:
         # possinilite d'implementer un 2eme algo
         else:
             raise ValueError
-    except (ValueError, KeyError, TypeError):
+    except (Exception):
         return "ALGORITHM"
 
     try:
@@ -117,19 +114,19 @@ def config_validator(data: dict) -> Optional[Dict[str, Any] | str]:
             config.update({"SEED": "NOT_DATA"})
         else:
             config.update({"SEED": seed})
-    except (ValueError, KeyError, TypeError):
-        return "SEED"
+    except (Exception):
+        return "Probleme with SEED, please change value"
 
     try:
         output = data.get("OUTPUT_FILE")
         output = str(output)
         if output.endswith(".txt") and len(output) >= 5:
             if output == "config.txt":
-                return "OUTPUT FILE = FILE"
+                return "Probleme with OUTPUT FILE = FILE"
             config.update({"OUTPUT_FILE": output})
         else:
             raise ValueError
-    except (ValueError, KeyError, TypeError):
-        return "OUTPUT_FILE"
+    except (Exception):
+        return "Probleme with OUTPUT_FILE"
 
     return config

@@ -46,8 +46,7 @@ class MazeGenerator():
             valid += [(x, y - 1, "S")]
         return valid
 
-    # Typer apres
-    def bactracking_algorithm(self):
+    def bactracking_algorithm(self) -> List[List[int]]:
         self.maze_empty_generation()
         self.visited()
 
@@ -64,7 +63,6 @@ class MazeGenerator():
             neighbors = self.get_valid_neighbors(current[0], current[1])
             if neighbors:
                 stack.append(current)
-    # & en commun, | difference
                 nx, ny, direction = random.choice(neighbors)
                 self.maze[current[1]][current[0]] &= ~posibility.get(direction)
                 self.maze[ny][nx] &= ~opposite.get(direction)
@@ -75,6 +73,8 @@ class MazeGenerator():
                 current = stack.pop()
             else:
                 break
+
+        # a retirer apres les test
         print(self.maze)
         print()
         print(stack)
@@ -98,7 +98,7 @@ class MazeGenerator():
 
 
 """
-1. Générer la structure du maze (bits)
+1. Générer la structure du maze (bits) OK
 2. Vérifier qu’il est valide
 3. Ajouter le "42"
 4. Calculer le chemin (Backtraking)

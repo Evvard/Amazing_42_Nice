@@ -2,10 +2,8 @@ from typing import List, Optional, Tuple
 import random
 
 
-#x = largeur
-#y = taile
-
-
+# x = largeur
+# y = taile
 
 class MazeGenerator():
 
@@ -20,10 +18,12 @@ class MazeGenerator():
         self.exit = config.get("EXIT")
 
     def maze_empty_generation(self) -> None:
-        self.maze = [[15 for _ in range(self.width)] for _ in range(self.height)]
+        self.maze = [[15 for _ in range(self.width)]
+                     for _ in range(self.height)]
 
     def visited(self) -> None:
-        self.visited = [[False for _ in range(self.width)] for _ in range(self.height)]
+        self.visited = [[False for _ in range(self.width)]
+                        for _ in range(self.height)]
 
     def check_case(self, x: int, y: int) -> bool:
         if 0 <= x < self.width and 0 <= y < self.height:
@@ -31,7 +31,10 @@ class MazeGenerator():
                 return True
         return False
 
-    def get_valid_neighbors(self, x: int, y: int) -> Optional[List[Tuple[int, int, str]] | None]:
+    def get_valid_neighbors(self,
+                            x: int,
+                            y: int) -> Optional[List[Tuple[int, int, str]] |
+                                                None]:
         valid = []
         if self.check_case(x + 1, y):
             valid += [(x + 1, y, "E")]
@@ -43,7 +46,7 @@ class MazeGenerator():
             valid += [(x, y - 1, "S")]
         return valid
 
-    #Typer apres
+    # Typer apres
     def bactracking_algorithm(self):
         self.maze_empty_generation()
         self.visited()
@@ -69,7 +72,7 @@ class MazeGenerator():
 
 
 
-""" 
+"""
 1. Générer la structure du maze (bits)
 2. Vérifier qu’il est valide
 3. Ajouter le "42"
@@ -77,7 +80,5 @@ class MazeGenerator():
 5. Écrire en hex dans le fichier
 6. (bonus) affichage ASCII """
 
-
-
-"""     sys.setrecursionlimit(new_limit)  
+"""     sys.setrecursionlimit(new_limit)
     changed_current_limit = sys.getrecursionlimit() """

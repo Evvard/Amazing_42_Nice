@@ -1,5 +1,5 @@
 from typing import List, Optional, Tuple
-
+import random
 
 
 #x = largeur
@@ -43,14 +43,29 @@ class MazeGenerator():
             valid += [(x, y - 1, "S")]
         return valid
 
-    def bactracking_algorithm(self) -> :
-        self.maze_empty_generation(self)
-        self.visited(self)
-        self.maze[self.entry[1]][self.entry[0]] = 
-        self.maze[self.exit[1]][self.exit[0]] = 
+    #Typer apres
+    def bactracking_algorithm(self):
+        self.maze_empty_generation()
+        self.visited()
 
+        current = (self.entry[0], self.entry[1])
+        stack = []
+        self.visited[current[1]][current[0]] = True
 
+        while stack or self.get_valid_neighbors(current[0], current[1]):
+            neighbors = self.get_valid_neighbors(current[0], current[1])
+            if neighbors:
+                stack.append(current)
+                nx, ny, direction = random.choice(neighbors)
+                current = (nx, ny)
+                self.visited[ny][nx] = True
+            else:
+                current = stack.pop()
 
+        print(stack)
+        print()
+        print()
+        print(current)
 
 
 
@@ -64,5 +79,5 @@ class MazeGenerator():
 
 
 
-    sys.setrecursionlimit(new_limit)  
-    changed_current_limit = sys.getrecursionlimit()
+"""     sys.setrecursionlimit(new_limit)  
+    changed_current_limit = sys.getrecursionlimit() """

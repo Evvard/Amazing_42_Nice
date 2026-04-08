@@ -20,6 +20,8 @@ def extraction_config(entry: str) -> Optional[Dict[str, Any] | str]:
         with open(entry, 'r') as file:
             for line in file:
                 try:
+                    if line.startswith("#"):
+                        continue
                     line = line.strip()
                     if "=" in line:
                         key, value = line.split("=", 1)
@@ -27,7 +29,7 @@ def extraction_config(entry: str) -> Optional[Dict[str, Any] | str]:
                     else:
                         raise ValueError
                 except ValueError:
-                    pass
+                    return "INVALID VALUE IN CONFIG.TXT"
     except FileNotFoundError or PermissionError:
         return "MISSING CONFIG.TXT"
     return data
@@ -119,10 +121,12 @@ def config_validator(data: dict) -> Optional[Dict[str, Any] | str]:
         return "SEED"
 
     try:
-        algo = data.get("OUTPUT_FILE")
-        algo = str(algo)
-        if algo.endswith(".txt") and len(algo) >= 5:
-            config.update({"OUTPUT_FILE": algo})
+        output = data.get("OUTPUT_FILE")
+        output = str(output)
+        if output.endswith(".txt") and len(output) >= 5:
+            if output == "config.txt":
+                return "OUTPUT FILE = FILE"
+            config.update({"OUTPUT_FILE": output})
         else:
             raise ValueError
     except (ValueError, KeyError, TypeError):

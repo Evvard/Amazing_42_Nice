@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 
 
@@ -31,7 +31,7 @@ class MazeGenerator():
                 return True
         return False
 
-    def get_valid_neighbors(self, x: int, y: int) -> List[tuple]:
+    def get_valid_neighbors(self, x: int, y: int) -> Optional[List[Tuple[int, int, str]] | None]:
         valid = []
         if self.check_case(x + 1, y):
             valid += [(x + 1, y, "E")]
@@ -48,3 +48,21 @@ class MazeGenerator():
         self.visited(self)
         self.maze[self.entry[1]][self.entry[0]] = 
         self.maze[self.exit[1]][self.exit[0]] = 
+
+
+
+
+
+
+""" 
+1. Générer la structure du maze (bits)
+2. Vérifier qu’il est valide
+3. Ajouter le "42"
+4. Calculer le chemin (Backtraking)
+5. Écrire en hex dans le fichier
+6. (bonus) affichage ASCII """
+
+
+
+    sys.setrecursionlimit(new_limit)  
+    changed_current_limit = sys.getrecursionlimit()

@@ -39,7 +39,7 @@ class MazeGenerator():
         if self.check_case(x + 1, y):
             valid += [(x + 1, y, "E")]
         if self.check_case(x - 1, y):
-            valid += [(x - 1, y, "O")]
+            valid += [(x - 1, y, "W")]
         if self.check_case(x, y + 1):
             valid += [(x, y + 1, "N")]
         if self.check_case(x, y - 1):
@@ -51,25 +51,50 @@ class MazeGenerator():
         self.maze_empty_generation()
         self.visited()
 
+        if self.seed is not None:
+            random.seed(self.seed)
+
+        posibility = {"N": 1, "S": 4, "E": 2, "W": 8}
+        opposite = {"N": 4, "S": 1, "E": 8, "W": 2}
         current = (self.entry[0], self.entry[1])
         stack = []
         self.visited[current[1]][current[0]] = True
 
-        while stack or self.get_valid_neighbors(current[0], current[1]):
+        while True:
             neighbors = self.get_valid_neighbors(current[0], current[1])
             if neighbors:
                 stack.append(current)
+    # & en commun, | difference
                 nx, ny, direction = random.choice(neighbors)
+                self.maze[current[1]][current[0]] &= ~posibility.get(direction)
+                self.maze[ny][nx] &= ~opposite.get(direction)
                 current = (nx, ny)
                 self.visited[ny][nx] = True
-            else:
-                current = stack.pop()
 
+            elif stack:
+                current = stack.pop()
+            else:
+                break
+        print(self.maze)
+        print()
         print(stack)
         print()
         print()
         print(current)
 
+
+
+""" explication rapide de l'algo: possibilite et opposite: chiffre binnaires.
+    current la case sur laquelle on se trouve
+    stack le chemin
+    self.visited: voir si on a visiter la case
+    a partir du while: on regarde si il y a des voisins possbles (List[Tuple[int, int, str])
+    si oui on ajoute comme valide dans stack, on modifie les murs de current pour les oubrir ou non:
+    0000 en binaire = Tout ouvert. 1111 tout ferme. grace a &= on dit ca prend les bits en commun entre 15 et l'inverse de ce qui a ete selectionner dans possibility
+    exemple: on a 15 donc 1111 et on veut retirer un mur au Nord(= 0001): on dit donc de garder ce qui est egale entre 1111 et 1110 donc 1110
+    ensuite sur la nouvelle case voisine choisie au hazard grace a randit, on fait la meme, car si on retire un mur Est par exemple, on retire le mur West sur la case a Gauche d'elle
+    
+    si il n'y a pas de voisin on retourne en arriere en suprime le derniere element et le donne en nouvelle position"""
 
 
 """

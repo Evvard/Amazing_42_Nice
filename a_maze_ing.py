@@ -18,8 +18,10 @@ def main() -> None:
     # config ok
 
 
+
 if __name__ == "__main__":
-    try:
-        main()
-    except Exception as m:
-        print(m)
+    
+    # try:
+    main()
+    # except Exception as m:
+    #    print(m)

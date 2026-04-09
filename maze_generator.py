@@ -66,15 +66,6 @@ class MazeGenerator():
                     real_y = py + offset_y
                     self.see[real_y][real_x] = True
                     self.maze[real_y][real_x] = 15
-                    if real_x + 1 < self.width:
-                        self.maze[real_y][real_x + 1] |= 8
-                    if real_x - 1 >= 0:
-                        self.maze[real_y][real_x - 1] |= 2
-                    if real_y + 1 < self.height:
-                        self.maze[real_y + 1][real_x] |= 1
-                    if real_y - 1 >= 0:
-                        self.maze[real_y - 1][real_x] |= 4
-
     def bactracking_algorithm(self) -> List[List[int]]:
         self.maze_empty_generation()
         self.visited()

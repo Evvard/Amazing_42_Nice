@@ -18,10 +18,6 @@ def main() -> None:
 
 
 
-verifier que la demande pour exit et entrer sois bien plus petite que la longeur et la largeur
+
 if __name__ == "__main__":
-    
-    # try:
     main()
-    # except Exception as m:
-    #    print(m)

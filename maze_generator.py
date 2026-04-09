@@ -1,4 +1,4 @@
-from typing import List, Optional, Tuple
+from typing import List, Tuple
 import random
 
 
@@ -22,33 +22,67 @@ class MazeGenerator():
                      for _ in range(self.height)]
 
     def visited(self) -> None:
-        self.visited = [[False for _ in range(self.width)]
-                        for _ in range(self.height)]
+        self.see = [[False for _ in range(self.width)]
+                    for _ in range(self.height)]
 
     def check_case(self, x: int, y: int) -> bool:
         if 0 <= x < self.width and 0 <= y < self.height:
-            if not self.visited[y][x]:
+            if not self.see[y][x]:
                 return True
         return False
 
     def get_valid_neighbors(self,
                             x: int,
-                            y: int) -> Optional[List[Tuple[int, int, str]] |
-                                                None]:
+                            y: int) -> List[Tuple[int, int, str]]:
         valid = []
         if self.check_case(x + 1, y):
             valid += [(x + 1, y, "E")]
         if self.check_case(x - 1, y):
             valid += [(x - 1, y, "W")]
         if self.check_case(x, y + 1):
-            valid += [(x, y + 1, "N")]
+            valid += [(x, y + 1, "S")]
         if self.check_case(x, y - 1):
-            valid += [(x, y - 1, "S")]
+            valid += [(x, y - 1, "N")]
         return valid
+
+    def apply_42_pattern(self):
+        pattern = [
+                    "1000111",
+                    "1000001",
+                    "1110111",
+                    "0010100",
+                    "0010111"
+                    ]
+        offset_x = (self.width - 7) // 2
+        offset_y = (self.height - 5) // 2
+
+        pattern_height = len(pattern)
+        pattern_width = len(pattern[0])
+
+        for py in range(pattern_height):
+            for px in range(pattern_width):
+                if pattern[py][px] == "1":
+                    real_x = px + offset_x
+                    real_y = py + offset_y
+                    self.see[real_y][real_x] = True
+                    self.maze[real_y][real_x] = 15
+                    if real_x + 1 < self.width:
+                        self.maze[real_y][real_x + 1] |= 8
+                    if real_x - 1 >= 0:
+                        self.maze[real_y][real_x - 1] |= 2
+                    if real_y + 1 < self.height:
+                        self.maze[real_y + 1][real_x] |= 1
+                    if real_y - 1 >= 0:
+                        self.maze[real_y - 1][real_x] |= 4
 
     def bactracking_algorithm(self) -> List[List[int]]:
         self.maze_empty_generation()
         self.visited()
+
+        if self.height >= 9 and self.width >= 7:
+            self.apply_42_pattern()
+        else:
+            print("42 not appplied, parameter of configuration are too small")
 
         if self.seed is not None:
             random.seed(self.seed)
@@ -56,11 +90,9 @@ class MazeGenerator():
         posibility = {"N": 1, "S": 4, "E": 2, "W": 8}
         opposite = {"N": 4, "S": 1, "E": 8, "W": 2}
         current = (self.entry[0], self.entry[1])
-        
-        end = (self.exit[1], self.exit[0])
 
         stack = []
-        self.visited[current[1]][current[0]] = True
+        self.see[current[1]][current[0]] = True
 
         while True:
             neighbors = self.get_valid_neighbors(current[0], current[1])
@@ -70,10 +102,7 @@ class MazeGenerator():
                 self.maze[current[1]][current[0]] &= ~posibility.get(direction)
                 self.maze[ny][nx] &= ~opposite.get(direction)
                 current = (nx, ny)
-                self.visited[ny][nx] = True
-                if self.maze[ny][nx] == self.maze[end[0]][end[1]]:
-                    print("test")
-                    break
+                self.see[ny][nx] = True
 
             elif stack:
                 current = stack.pop()
@@ -87,6 +116,14 @@ class MazeGenerator():
         print()
         print()
         print(current)
+
+
+
+
+
+
+
+
 
 
 

@@ -1,5 +1,5 @@
 from typing import Any, Optional, Dict
-# version_correcte
+import time
 
 
 def parse_type_value(value: Any) -> int | str | float:
@@ -61,9 +61,11 @@ def config_validator(data: dict) -> Optional[Dict[str, Any] | str]:
         value_en[0] = int(value_en[0])
         value_en[1] = int(value_en[1])
         if value_en[0] < 0 or value_en[0] > 100:
-            raise ValueError
+            raise ValueError("Out of range, error")
         if value_en[1] < 0 or value_en[1] > 100:
-            raise ValueError
+            raise ValueError("Out of range, error")
+        if value_en[0] >= width or value_en[1] >= height:
+            raise ValueError("Entry coordinates are out of maze bounds")
         config.update({"ENTRY": value_en})
     except (Exception):
         return "Probleme with ENTRY value"
@@ -78,9 +80,13 @@ def config_validator(data: dict) -> Optional[Dict[str, Any] | str]:
             raise ValueError
         if value_ex[1] < 0 or value_ex[1] > 100:
             raise ValueError
+        if value_ex[0] >= width:
+            raise ValueError("Exit coordonate are bigger than Widht")
+        if value_ex[1] >= height:
+            raise ValueError("Exit coordonate are bigger than height")
         config.update({"EXIT": value_ex})
-    except (Exception):
-        return "Probleme with EXIT value "
+    except Exception as m:
+        return f"Probleme with EXIT value: {m}"
 
     if config["ENTRY"] == config["EXIT"]:
         return "Probleme with Entry because EXIT == ENTRY"
@@ -110,8 +116,8 @@ def config_validator(data: dict) -> Optional[Dict[str, Any] | str]:
     try:
         # Je ne sais pas le format des seeds donc a modifier plus tard
         seed = data.get("SEED")
-        if not data:
-            config.update({"SEED": "NOT_DATA"})
+        if not seed:
+            config.update({"SEED": time.time()})
         else:
             config.update({"SEED": seed})
     except (Exception):

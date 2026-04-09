@@ -15,6 +15,7 @@ def main() -> None:
     print(config)
     maze = MazeGenerator(config)
     maze.bactracking_algorithm()
+    maze.file_output()
 
 
 

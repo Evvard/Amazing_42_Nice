@@ -56,6 +56,9 @@ class MazeGenerator():
         posibility = {"N": 1, "S": 4, "E": 2, "W": 8}
         opposite = {"N": 4, "S": 1, "E": 8, "W": 2}
         current = (self.entry[0], self.entry[1])
+        
+        end = (self.exit[1], self.exit[0])
+
         stack = []
         self.visited[current[1]][current[0]] = True
 
@@ -68,6 +71,9 @@ class MazeGenerator():
                 self.maze[ny][nx] &= ~opposite.get(direction)
                 current = (nx, ny)
                 self.visited[ny][nx] = True
+                if self.maze[ny][nx] == self.maze[end[0]][end[1]]:
+                    print("test")
+                    break
 
             elif stack:
                 current = stack.pop()

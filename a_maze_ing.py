@@ -12,13 +12,13 @@ def main() -> None:
     config = config_validator(brut_data_from_config_txt)
     if isinstance(config, str):
         raise ValueError(config)
-
+    print(config)
     maze = MazeGenerator(config)
     maze.bactracking_algorithm()
-    # config ok
 
 
 
+verifier que la demande pour exit et entrer sois bien plus petite que la longeur et la largeur
 if __name__ == "__main__":
     
     # try:

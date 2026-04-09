@@ -1,6 +1,7 @@
 from parser import extraction_config, config_validator
 from sys import argv
 from maze_generator import MazeGenerator
+from display import display
 
 
 def main() -> None:
@@ -14,8 +15,14 @@ def main() -> None:
         raise ValueError(config)
     print(config)
     maze = MazeGenerator(config)
-    maze.bactracking_algorithm()
-    maze.file_output()
+    maze_brut = maze.bactracking_algorithm()
+    solution = maze.file_output()
+    display(maze_brut, solution)
+
+
+
+
+
 
 
 

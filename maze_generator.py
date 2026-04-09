@@ -70,7 +70,7 @@ class MazeGenerator():
         if (real_x, real_y) == self.entry or (real_x, real_y) == self.exit:
             raise ValueError("Entry or exit must be outside the 42 pattern")
 
-    def bactracking_algorithm(self) -> None:
+    def bactracking_algorithm(self) -> List[List[int]]:
         self.maze_empty_generation()
         self.visited()
 
@@ -110,7 +110,10 @@ class MazeGenerator():
         for i in range(len(self.maze)):
             print(self.maze[i])
 
-    def file_output(self) -> None:
+
+        return self.maze
+
+    def file_output(self) -> List[tuple]:
         file = open(self.output, 'w')
         for i in self.maze:
             hex_row = "".join("{:X}".format(cell) for cell in i)
@@ -139,6 +142,7 @@ class MazeGenerator():
 
         file.write(" ".join(direction) + "\n")
         file.close()
+        return self.solution
 
 
 

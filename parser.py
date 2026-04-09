@@ -105,16 +105,14 @@ def config_validator(data: dict) -> Optional[Dict[str, Any] | str]:
     try:
         algo = data.get("ALGORITHM")
         # a modifier en fonction de l'algo
-        if algo == "?":
+        if algo == "bactracking":
             config.update({"ALGORITHM": algo})
-        # possinilite d'implementer un 2eme algo
         else:
             raise ValueError
     except (Exception):
         return "ALGORITHM"
 
     try:
-        # Je ne sais pas le format des seeds donc a modifier plus tard
         seed = data.get("SEED")
         if not seed:
             config.update({"SEED": time.time()})

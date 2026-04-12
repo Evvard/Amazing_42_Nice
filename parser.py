@@ -1,4 +1,4 @@
-from typing import Any, Optional, Dict
+from typing import Any, Optional, Dict, List
 import time
 
 
@@ -27,18 +27,17 @@ def extraction_config(entry: str) -> Optional[Dict[str, Any] | str]:
                     data[key] = parse_type_value(value)
                 else:
                     raise ValueError("INVALID VALUE IN CONFIG.TXT")
-    except FileNotFoundError or PermissionError:
+    except Exception:
         raise FileNotFoundError("File Missing")
     return data
 
 
-# en supposant que notre maze est une size entre 0 et 100
 def config_validator(data: dict) -> Optional[Dict[str, Any] | str]:
-    config = dict({})
+    config: Dict[str, Any] = {}
 
     try:
         width = data.get("WIDTH")
-        value_w = int(width)
+        value_w = int(width) if width is not None else 0
         if value_w <= 0 or value_w >= 100:
             raise ValueError
         config.update({"WIDTH": value_w})
@@ -47,7 +46,7 @@ def config_validator(data: dict) -> Optional[Dict[str, Any] | str]:
 
     try:
         height = data.get("HEIGHT")
-        value_h = int(height)
+        value_h = int(height) if height is not None else 0
         if value_h <= 0 or value_h >= 100:
             raise ValueError
         config.update({"HEIGHT": value_h})
@@ -57,9 +56,8 @@ def config_validator(data: dict) -> Optional[Dict[str, Any] | str]:
     try:
         entry = data.get("ENTRY")
         value_str = str(entry).replace('.', ',')
-        value_en = value_str.split(',')
-        value_en[0] = int(value_en[0])
-        value_en[1] = int(value_en[1])
+        parts = value_str.split(',')
+        value_en: List[int] = [int(parts[0]), int(parts[1])]
         if value_en[0] < 0 or value_en[0] > 100:
             raise ValueError("Out of range, error")
         if value_en[1] < 0 or value_en[1] > 100:
@@ -93,9 +91,9 @@ def config_validator(data: dict) -> Optional[Dict[str, Any] | str]:
 
     try:
         perfect = data.get("PERFECT")
-        if perfect.upper() == "TRUE":
+        if perfect == "TRUE":
             config.update({"PERFECT": True})
-        elif perfect.upper() == "FALSE":
+        elif perfect == "FALSE":
             config.update({"PERFECT": False})
         else:
             raise ValueError

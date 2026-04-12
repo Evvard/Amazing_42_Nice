@@ -112,7 +112,7 @@ class MazeGenerator():
 
         return self.maze
 
-    def file_output(self) -> List[tuple]:
+    def file_output(self) -> List[str]:
         file = open(self.output, 'w')
         for i in self.maze:
             hex_row = "".join("{:X}".format(cell) for cell in i)
@@ -123,6 +123,7 @@ class MazeGenerator():
         file.write("\n")
 
         direction = []
+        solution = []
         for i in range(len(self.solution) - 1):
             curr = self.solution[i]
             nxt = self.solution[i+1]
@@ -132,13 +133,17 @@ class MazeGenerator():
 
             if dx == 1:
                 direction.append("E")
+                solution += ["E"]
             elif dx == -1:
-                direction.append("O")
+                direction.append("W")
+                solution += ["W"]
             elif dy == 1:
                 direction.append("S")
+                solution += ["S"]
             elif dy == -1:
                 direction.append("N")
+                solution += ["N"]
 
         file.write(" ".join(direction) + "\n")
         file.close()
-        return self.solution
+        return solution

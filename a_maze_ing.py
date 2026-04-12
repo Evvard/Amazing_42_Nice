@@ -22,38 +22,37 @@ def main() -> None:
     maze = MazeGenerator(config)
     maze_brut = maze.bactracking_algorithm()
     solution = maze.file_output()
-    display(maze_brut, solution)
+    display(maze_brut, solution, False, config.get("ENTRY"),
+            config.get("EXIT"), False)
+
+    path_visible = False
+    colors_rotated = False
 
     while True:
+        clear_terminal()
+        display(maze_brut, solution, path_visible, config.get("ENTRY"),
+                config.get("EXIT"), colors_rotated)
 
         print("\n--- A-Maze-ing ---")
         print("1. Re-generate a new maze")
-        print("2. Show/Hide Path from entry to exit")
+        print("2. Show/Hide Path")
         print("3. Rotate maze colors")
         print("4. Quit")
-        try:
-            choice = int(input("Choice?(1-4):"))
-            if choice < 1 or choice > 4:
-                raise ValueError
-        except Exception:
-            raise ValueError("Wrong value in input for choice")
-        if choice == 1:
-            clear_terminal()
+
+        choice = input("Choice?(1-4): ")
+        if choice == "1":
             config = config_validator(brut_data_from_config_txt)
             maze = MazeGenerator(config)
             maze_brut = maze.bactracking_algorithm()
             solution = maze.file_output()
-            display(maze_brut, solution)
-        elif choice == 2:
-            pass
-            pass
-            pass
-        elif choice == 3:
-            pass
-            pass
-            pass
-        else:
+        elif choice == "2":
+            path_visible = not path_visible
+        elif choice == "3":
+            colors_rotated = not colors_rotated
+        elif choice == "4":
             break
+        else:
+            raise Exception("Wrong input for --- A-Maze-ing ---")
 
 
 if __name__ == "__main__":

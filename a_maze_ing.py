@@ -69,6 +69,3 @@ if __name__ == "__main__":
         main()
     except Execption as m:
          print(m) """
-
-
-""" RAJOUTER UNE CONDITION: SI EXIT OU ENTRY DANS LE 42, ANULLER """

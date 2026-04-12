@@ -5,7 +5,7 @@ from display import display
 import os
 
 
-def clear_terminal():
+def clear_terminal() -> None:
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
@@ -15,23 +15,28 @@ def main() -> None:
     except IndexError:
         raise IndexError("Missing file.txt is 2nd argument")
 
+    if brut_data_from_config_txt is None:
+        raise ValueError("Config file is empty or invalid")
+
     config = config_validator(brut_data_from_config_txt)
-    if isinstance(config, str):
-        raise ValueError(config)
-    print(config)
+
     maze = MazeGenerator(config)
-    maze_brut = maze.bactracking_algorithm()
-    solution = maze.file_output()
-    display(maze_brut, solution, False, config.get("ENTRY"),
-            config.get("EXIT"), False)
+    if config.get("ALGORITHM") == "bactracking":
+        maze_brut = maze.bactracking_algorithm()
+        solution = maze.file_output()
+
+    if maze_brut is None or solution is None:
+        print("Error: Could not generate maze or solution.")
+        return
 
     path_visible = False
     colors_rotated = False
 
     while True:
         clear_terminal()
-        display(maze_brut, solution, path_visible, config.get("ENTRY"),
-                config.get("EXIT"), colors_rotated)
+        display(maze_brut, solution, path_visible,
+                config.get("ENTRY", [0, 0]),
+                config.get("EXIT", [0, 0]), colors_rotated)
 
         print("\n--- A-Maze-ing ---")
         print("1. Re-generate a new maze")
@@ -43,8 +48,11 @@ def main() -> None:
         if choice == "1":
             config = config_validator(brut_data_from_config_txt)
             maze = MazeGenerator(config)
-            maze_brut = maze.bactracking_algorithm()
+            if config.get("ALGORITHM") == "bactracking":
+                maze_brut = maze.bactracking_algorithm()
             solution = maze.file_output()
+            if maze_brut is None or solution is None:
+                break
         elif choice == "2":
             path_visible = not path_visible
         elif choice == "3":
@@ -63,4 +71,4 @@ if __name__ == "__main__":
          print(m) """
 
 
-RAJOUTER UNE CONDITION: SI EXIT OU ENTRY DANS LE 42, ANULLER
+""" RAJOUTER UNE CONDITION: SI EXIT OU ENTRY DANS LE 42, ANULLER """

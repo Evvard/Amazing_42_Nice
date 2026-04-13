@@ -3,7 +3,7 @@ from typing import List, Tuple
 
 def transform_path(path: List[str],
                    start_pos: List[int]) -> List[Tuple[int, int]]:
-    curr_y, curr_x = start_pos[0], start_pos[1]
+    curr_x, curr_y = start_pos[0], start_pos[1]
     lst = [(curr_y, curr_x)]
     for move in path:
         if move == "E":

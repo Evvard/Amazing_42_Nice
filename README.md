@@ -56,7 +56,7 @@ Pour utiliser notre **Amazing**, il faut renseigner des donne dans le fichier de
 &nbsp;&nbsp;&nbsp;&nbsp;SEED: Choisir de Manipuler l'aleatoire<br>
 
 Vous avez acces a plusieurs commandes grace au **Makefile**:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;***make install***: Installer les dependance dans un virtual environnement (obligatoire)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;***make | make install***: Installer les dependance dans un virtual environnement (obligatoire)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;***make run***: lancer le programme soit (python3 a_maze_ing.py config.txt)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;***make debug***: lancer le debugeur python<br>
 &nbsp;&nbsp;&nbsp;&nbsp;***make clean***: suprimer les fichier du a mypy ou le cache python<br>

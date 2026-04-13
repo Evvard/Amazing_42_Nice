@@ -33,7 +33,11 @@ def main() -> None:
     colors_rotated = False
 
     while True:
+        height = config.get("HEIGHT")
+        width = config.get("WIDTH")
         clear_terminal()
+        if height < 9 and width < 7 if height and width else None:
+            print("\n42 not appplied, height or width are too small\n")
         display(maze_brut, solution, path_visible,
                 config.get("ENTRY", [0, 0]),
                 config.get("EXIT", [0, 0]), colors_rotated)
@@ -64,8 +68,7 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
-""" try:
+    try:
         main()
-    except Execption as m:
-         print(m) """
+    except Exception as m:
+        print(m)

@@ -1,5 +1,5 @@
 install:
-	pip install flake8, mypy
+	pip install flake8 mypy
 run:
 	python3 a_maze_ing.py config.txt
 

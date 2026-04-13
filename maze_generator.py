@@ -73,8 +73,14 @@ class MazeGenerator():
         for py in range(pattern_height):
             for px in range(pattern_width):
                 if pattern[py][px] == "1":
-                    real_x = px + offset_x
-                    real_y = py + offset_y
+                    if px is not None and offset_x:
+                        real_x = px + offset_x
+                    else:
+                        return None
+                    if py is not None and offset_y:
+                        real_y = py + offset_y
+                    else:
+                        return None
                     self.see[real_y][real_x] = True
                     self.maze[real_y][real_x] = 15
         if (real_x, real_y) == self.entry or (real_x, real_y) == self.exit:

@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mazegen"
+version = "1.0.0"
+description = "Module de génération de labyrinthes"
+readme = "README.md"
+authors = [{name = "eolivier + mbouyer"}]
+requires-python = ">=3.8"
+
+[tool.setuptools]
+packages = ["mazegen"]

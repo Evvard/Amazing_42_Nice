@@ -58,6 +58,7 @@ Pour utiliser notre **Amazing**, il faut renseigner des donne dans le fichier de
 Vous avez acces a plusieurs commandes grace au **Makefile**:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;***make | make install***: Installer les dependance dans un virtual environnement (obligatoire)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;***make run***: lancer le programme soit (python3 a_maze_ing.py config.txt)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;***make buid***: creer le fichier reutilisable .whl et gz a la racine du projet comme demande<br>
 &nbsp;&nbsp;&nbsp;&nbsp;***make debug***: lancer le debugeur python<br>
 &nbsp;&nbsp;&nbsp;&nbsp;***make clean***: suprimer les fichier du a mypy ou le cache python<br>
 &nbsp;&nbsp;&nbsp;&nbsp;***make lint***: flake8 et mypy<br>
@@ -65,12 +66,14 @@ Vous avez acces a plusieurs commandes grace au **Makefile**:<br>
 
 ## Resources
 
-&nbsp;&nbsp;&nbsp;&nbsp;https://www.geeksforgeeks.org/dsa/backtracking-algorithms/: pour mieux comprendre l'algorithme<br>
-&nbsp;&nbsp;&nbsp;&nbsp;https://www.youtube.com/watch?v=2IYdc5stUYY: affichage
+&nbsp;&nbsp;&nbsp;&nbsp;https://www.geeksforgeeks.org/dsa/backtracking-algorithms/: Pour mieux comprendre l'algorithme<br>
+&nbsp;&nbsp;&nbsp;&nbsp;https://www.youtube.com/watch?v=2IYdc5stUYY: Affichage<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Utilisation de l'ia: Affichage et makefile principalement pour comprendre comment pouvoir print le maze comme dans les exemple dans le sujet.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Google pour des recherches annexes.
+&nbsp;&nbsp;&nbsp;&nbsp;Google pour des recherches annexes.<br>
 
 ## Group Part
 
 &nbsp;&nbsp;&nbsp;&nbsp;Travail en commun donc pas de specificite la dessus.
 
+## Code reusability requirements
+&nbsp;&nbsp;&nbsp;&nbsp;Utiliser la regle ***make build*** pour generer 2 dossier .tar.gz et .whl qu'on peut installer avec pip install car ce sont des Python package

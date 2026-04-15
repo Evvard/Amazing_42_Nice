@@ -1,6 +1,6 @@
 from parser import extraction_config, config_validator
 from sys import argv
-from maze_generator import MazeGenerator
+from mazegen.maze_generator import MazeGenerator
 from display import display
 import os
 
@@ -31,17 +31,22 @@ def main() -> None:
 
     path_visible = False
     colors_rotated = False
+    bad_choice = False
 
     while True:
         height = config.get("HEIGHT")
         width = config.get("WIDTH")
+
         clear_terminal()
-        if height < 9 and width < 7 if height and width else None:
+        if height < 9 or width < 7 if height and width else None:
             print("\n42 not appplied, height or width are too small\n")
         display(maze_brut, solution, path_visible,
                 config.get("ENTRY", [0, 0]),
                 config.get("EXIT", [0, 0]), colors_rotated)
-
+        if bad_choice:
+            print("Wrong input, please enter a number between 1 and 4.")
+            bad_choice = False
+            input("Press Enter to continue...")
         print("\n--- A-Maze-ing ---")
         print("1. Re-generate a new maze")
         print("2. Show/Hide Path")
@@ -64,7 +69,7 @@ def main() -> None:
         elif choice == "4":
             break
         else:
-            raise Exception("Wrong input for --- A-Maze-ing ---")
+            bad_choice = True
 
 
 if __name__ == "__main__":

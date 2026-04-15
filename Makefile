@@ -11,6 +11,7 @@ build:
 	python3 -m build
 	cp dist/*.whl .
 	cp dist/*.tar.gz .
+	rm -rf dist/ build/ *.egg-info
 
 debug:
 	python3 -m pdb main.py config.txt
@@ -19,6 +20,7 @@ clean:
 	find . -type d -name "__pycache__" -exec rm -r {} +
 	find . -type d -name ".mypy_cache" -exec rm -r {} +
 	rm -rf dist/ build/ *.egg-info
+
 
 
 lint:

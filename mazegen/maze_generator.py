@@ -120,7 +120,7 @@ class MazeGenerator():
                     self.see[real_y][real_x] = True
                     self.maze[real_y][real_x] = 15
 
-    def make_imperfect(self, remove_ratio: float = 0.3) -> None:
+    def make_imperfect(self, remove_ratio: float = 1.0) -> None:
         if not self.width or not self.height:
             return
         posibility = {"N": 1, "S": 4, "E": 2, "W": 8}

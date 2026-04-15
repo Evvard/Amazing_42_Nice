@@ -21,6 +21,7 @@ Expliacation Rapide de l'algorithme:<br>
 
 &nbsp;&nbsp;&nbsp;&nbsp;Si on obtient des voisins valide, on va alors &= ~ Voulant dire "On garde les bits en commun entre l'inverse de" pour retirer les bits du mur et creer notre maze en meme temps.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Des qu'on est sur la case de sortie on enregistre la stack pour garder le path.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Si le flag perfect est actif, des trous sont fait dans le maze et une la sortie la plus optimise est directement recalcule<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Notre maze a donc un affichage ascii sur le terminal et a un maximum de 99 en height et width
 &nbsp;&nbsp;&nbsp;&nbsp;Tout le maze est reutilisable dut a sa proprete dans le code.
 
@@ -49,6 +50,7 @@ Vous avez acces a plusieurs commandes grace au **Makefile**:<br>
 
 &nbsp;&nbsp;&nbsp;&nbsp;https://www.geeksforgeeks.org/dsa/backtracking-algorithms/: Pour mieux comprendre l'algorithme<br>
 &nbsp;&nbsp;&nbsp;&nbsp;https://www.youtube.com/watch?v=2IYdc5stUYY: Affichage<br>
+&nbsp;&nbsp;&nbsp;&nbsp;https://blog.stephane-robert.info/<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Utilisation de l'ia: Affichage et makefile principalement pour comprendre comment pouvoir print le maze comme dans les exemple dans le sujet.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Google pour des recherches annexes.<br>
 

@@ -2,9 +2,6 @@ from typing import List, Tuple, Optional, Any
 import random
 from collections import deque
 
-# x = width
-# y = height
-
 
 class MazeGenerator():
 

@@ -51,20 +51,17 @@ def display(maze: List[List[int]], path: List[str], show_path: bool,
                 content = EXIT
             elif curr in nw_path:
                 content = PATH
+            elif char == 15:
+                content = MOTIF_W
             else:
                 content = EMPTY
 
             is_motif = (char == 15)
-            is_motif_east = is_motif or (x + 1 < width and maze[y][x+1] == 15)
-            is_motif_sout = is_motif or (y + 1 < height and maze[y+1][x] == 15)
 
-            east_color = MOTIF_W if is_motif_east else W
-            south_color = MOTIF_W if is_motif_sout else W
+            east_color = MOTIF_W if is_motif else W
+            south_color = MOTIF_W if is_motif else W
+            corner_color = MOTIF_W if is_motif else W
 
-            if is_motif or is_motif_east or is_motif_sout:
-                corner_color = MOTIF_W
-            else:
-                corner_color = W
             east_wall = (char & 2) or (x + 1 < width and (maze[y][x+1] & 8))
             south_wall = (char & 4) or (y + 1 < height and (maze[y+1][x] & 1))
 

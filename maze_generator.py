@@ -1,9 +1,9 @@
 from typing import List, Tuple, Optional
 import random
 
+# x = width
+# y = height
 
-# x = largeur
-# y = taile
 
 class MazeGenerator():
 
@@ -53,7 +53,7 @@ class MazeGenerator():
         return valid
 
     def apply_42_pattern(self) -> None:
-        if not (self.width, self.height, self.maze, self.exit, self.see):
+        if not all([self.width, self.height, self.maze, self.exit, self.see]):
             return
 
         pattern = [
@@ -63,28 +63,57 @@ class MazeGenerator():
                     "0010100",
                     "0010111"
                     ]
-
-        offset_x = (self.width - 7) // 2 if self.width else None
-        offset_y = (self.height - 5) // 2 if self.height else None
-
         pattern_height = len(pattern)
         pattern_width = len(pattern[0])
+
+        offset_x = (self.width - 7) // 2
+        offset_y = (self.height - 5) // 2
 
         for py in range(pattern_height):
             for px in range(pattern_width):
                 if pattern[py][px] == "1":
-                    if px is not None and offset_x:
-                        real_x = px + offset_x
-                    else:
-                        return None
-                    if py is not None and offset_y:
-                        real_y = py + offset_y
-                    else:
-                        return None
+                    real_x = px + offset_x
+                    real_y = py + offset_y
+                    if not (0 <= real_x < self.width and
+                            0 <= real_y < self.height):
+                        continue
+                    if (real_x, real_y) == tuple(self.entry) or\
+                       (real_x, real_y) == tuple(self.exit):
+                        raise ValueError("Entry or exit must be "
+                                         "outside the 42 pattern")
                     self.see[real_y][real_x] = True
                     self.maze[real_y][real_x] = 15
-        if (real_x, real_y) == self.entry or (real_x, real_y) == self.exit:
-            raise ValueError("Entry or exit must be outside the 42 pattern")
+
+    def make_imperfect(self, remove_ratio: float = 0.1) -> None:
+        if not self.width or not self.height:
+            return
+        posibility = {"N": 1, "S": 4, "E": 2, "W": 8}
+        opposite = {"N": 4, "S": 1, "E": 8, "W": 2}
+        directions = [
+            (1, 0, "E"),
+            (-1, 0, "W"),
+            (0, 1, "S"),
+            (0, -1, "N")
+        ]
+        total_cells = self.width * self.height
+        attempts = int(total_cells * remove_ratio)
+
+        for _ in range(attempts):
+            x = random.randint(0, self.width - 1)
+            y = random.randint(0, self.height - 1)
+
+            dx, dy, direction = random.choice(directions)
+            nx, ny = x + dx, y + dy
+
+            if not (0 <= nx < self.width and 0 <= ny < self.height):
+                continue
+
+            if self.maze[y][x] == 15 or self.maze[ny][nx] == 15:
+                continue
+            val = posibility[direction]
+            opp = opposite[direction]
+            self.maze[y][x] &= ~val
+            self.maze[ny][nx] &= ~opp
 
     def bactracking_algorithm(self) -> Optional[List[List[int]] | None]:
         self.maze_empty_generation()
@@ -132,6 +161,8 @@ class MazeGenerator():
                 current = stack.pop()
             else:
                 break
+        if not self.perfect:
+            self.make_imperfect()
         return self.maze
 
     def file_output(self) -> Optional[List[str] | None]:

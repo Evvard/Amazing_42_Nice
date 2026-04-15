@@ -17,6 +17,7 @@ class MazeGenerator():
         self.entry = config.get("ENTRY")
         self.exit = config.get("EXIT")
         self.solution: List[Tuple[int, int]] = []
+        self._imperfect_done = False
 
     def maze_empty_generation(self) -> None:
         if not self.width or not self.height:
@@ -84,7 +85,7 @@ class MazeGenerator():
                     self.see[real_y][real_x] = True
                     self.maze[real_y][real_x] = 15
 
-    def make_imperfect(self, remove_ratio: float = 0.1) -> None:
+    def make_imperfect(self, remove_ratio: float = 0.3) -> None:
         if not self.width or not self.height:
             return
         posibility = {"N": 1, "S": 4, "E": 2, "W": 8}
@@ -108,7 +109,7 @@ class MazeGenerator():
             if not (0 <= nx < self.width and 0 <= ny < self.height):
                 continue
 
-            if self.maze[y][x] == 15 or self.maze[ny][nx] == 15:
+            if self.see[y][x] or self.see[ny][nx]:
                 continue
             val = posibility[direction]
             opp = opposite[direction]
@@ -134,13 +135,12 @@ class MazeGenerator():
         if not self.entry:
             return None
         current = (self.entry[0], self.entry[1])
-
         stack: List[tuple] = []
         self.see[current[1]][current[0]] = True
+        self.solution = []
 
-        if not self.exit or self.solution != []:
+        if not self.exit:
             return None
-
         while True:
             if current == (self.exit[0], self.exit[1]) and not self.solution:
                 self.solution += stack + [current]
@@ -161,11 +161,14 @@ class MazeGenerator():
                 current = stack.pop()
             else:
                 break
-        if not self.perfect:
-            self.make_imperfect()
+        if not self.perfect and not self._imperfect_done:
+            self._imperfect_done = True
+            self.make_imperfect(remove_ratio=0.3)
+            return self.maze
         return self.maze
 
     def file_output(self) -> Optional[List[str] | None]:
+
         file_name = self.output if self.output else "maze.txt"
         with open(file_name, 'w') as file:
             for i in self.maze:
@@ -176,8 +179,6 @@ class MazeGenerator():
                 return None
             file.write(f"{self.entry[0]}, {self.entry[1]}\n")
             file.write(f"{self.exit[0]}, {self.exit[1]}\n")
-            file.write("\n")
-
             direction: List[str] = []
             solution: List[str] = []
             for z in range(len(self.solution) - 1):
@@ -199,5 +200,5 @@ class MazeGenerator():
                     direction.append("N")
                     solution += ["N"]
 
-            file.write(" ".join(direction) + "\n")
+            file.write("".join(direction) + "\n")
         return solution

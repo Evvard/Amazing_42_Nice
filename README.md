@@ -16,9 +16,6 @@
     Rendre le projet
 
 
-
-
-
 ## Description
 
 **Amazing** est un projet d'algorithmie dont l'objectif est de generer un labirinthe en python 3.10 totalement dinamyque et maleable grace a un fichier de configuration.

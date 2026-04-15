@@ -83,11 +83,11 @@ class MazeGenerator():
             return None
 
         pattern = [
-                    "1000111",
-                    "1000001",
-                    "1110111",
-                    "0010100",
-                    "0010111"
+                "1000111",
+                "1000001",
+                "1110111",
+                "0010100",
+                "0010111"
                     ]
         pattern_height = len(pattern)
         pattern_width = len(pattern[0])

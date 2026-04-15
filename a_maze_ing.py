@@ -6,7 +6,7 @@ import os
 
 
 def clear_terminal() -> None:
-    os.system('cls' if os.name == 'nt' else 'clear')
+    os.system('clear')
 
 
 def main() -> None:
@@ -69,7 +69,7 @@ def main() -> None:
         elif choice == "4":
             break
         else:
-            break
+            bad_choice = True
 
 
 if __name__ == "__main__":

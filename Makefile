@@ -14,7 +14,7 @@ build:
 	rm -rf dist/ build/ *.egg-info
 
 debug:
-	python3 -m pdb main.py config.txt
+	python3 -m pdb a_maze_ing.py config.txt
 
 clean:
 	find . -type d -name "__pycache__" -exec rm -r {} +

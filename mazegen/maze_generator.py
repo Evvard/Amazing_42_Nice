@@ -1,5 +1,6 @@
 from typing import List, Tuple, Optional
 import random
+from collections import deque
 
 # x = width
 # y = height
@@ -18,6 +19,7 @@ class MazeGenerator():
         self.exit = config.get("EXIT")
         self.solution: List[Tuple[int, int]] = []
         self._imperfect_done = False
+        self.solution_path: List[Tuple[int, int]] = []
 
     def maze_empty_generation(self) -> None:
         if not self.width or not self.height:
@@ -52,6 +54,32 @@ class MazeGenerator():
         if self.check_case(x, y - 1):
             valid += [(x, y - 1, "N")]
         return valid
+
+    def find_shortest_path(self) -> List[Tuple[int, int]]:
+        if not self.entry or not self.exit:
+            return []
+        queue = deque([(self.entry[0], self.entry[1], [self.entry])])
+        visited = set()
+        visited.add((self.entry[0], self.entry[1]))
+        directions = [
+            (0, -1, 1),  # dx, dy, bit
+            (1, 0, 2),
+            (0, 1, 4),
+            (-1, 0, 8)
+        ]
+        while queue:
+            x, y, path = queue.popleft()
+            if (x, y) == (self.exit[0], self.exit[1]):
+                return path
+            for dx, dy, bit in directions:
+                nx, ny = x + dx, y + dy
+                if (0 <= nx < self.width and 0 <= ny < self.height and
+                        (nx, ny) not in visited):
+                    if not (self.maze[y][x] & bit):  # no wall
+                        visited.add((nx, ny))
+                        queue.append((nx, ny,
+                                      path + [(nx, ny)]))
+        return []
 
     def apply_42_pattern(self) -> None:
         if not all([self.width, self.height, self.maze, self.exit, self.see]):
@@ -109,7 +137,9 @@ class MazeGenerator():
             if not (0 <= nx < self.width and 0 <= ny < self.height):
                 continue
 
-            if self.see[y][x] or self.see[ny][nx]:
+            if not (self.see[y][x] and self.see[ny][nx]):
+                continue
+            if self.maze[y][x] == 15 or self.maze[ny][nx] == 15:
                 continue
             val = posibility[direction]
             opp = opposite[direction]
@@ -142,8 +172,6 @@ class MazeGenerator():
         if not self.exit:
             return None
         while True:
-            if current == (self.exit[0], self.exit[1]) and not self.solution:
-                self.solution += stack + [current]
             neighbors = self.get_valid_neighbors(current[0], current[1])
             if neighbors:
                 stack.append(current)
@@ -164,7 +192,8 @@ class MazeGenerator():
         if not self.perfect and not self._imperfect_done:
             self._imperfect_done = True
             self.make_imperfect(remove_ratio=0.3)
-            return self.maze
+        self.solution = self.find_shortest_path()
+        self.solution_path = self.solution
         return self.maze
 
     def file_output(self) -> Optional[List[str] | None]:

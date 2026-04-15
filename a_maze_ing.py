@@ -69,7 +69,7 @@ def main() -> None:
         elif choice == "4":
             break
         else:
-            bad_choice = True
+            break
 
 
 if __name__ == "__main__":

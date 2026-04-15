@@ -1,21 +1,5 @@
 *This project has been created as part of the 42 curriculum by eolivier and mbouyer.*
 
-
-1. Générer la structure du maze (bits) OK
-2. Vérifier qu’il est valide OK
-3. Ajouter le "42" OK
-4. Calculer le chemin (Backtraking)OK
-5. Écrire en hex dans le fichier OK
-6. (bonus) affichage ASCII  OK
-7. Norme OK
-8. Rediger le Readme OK
-
-    ce qu'il reste a faire:
-    Il faut juste implementer la mecanique du flag Perfect
-    Il faut faire en sorte que si exit ou entrer est dans le 42 on print un message d'erreur
-    Rendre le projet
-
-
 ## Description
 
 **Amazing** est un projet d'algorithmie dont l'objectif est de generer un labirinthe en python 3.10 totalement dinamyque et maleable grace a un fichier de configuration.

@@ -1,4 +1,4 @@
-from typing import List, Tuple, Optional
+from typing import List, Tuple, Optional, Any
 import random
 from collections import deque
 
@@ -8,7 +8,7 @@ from collections import deque
 
 class MazeGenerator():
 
-    def __init__(self, config: dict):
+    def __init__(self, config: dict[str, Any]):
         self.height = config.get("HEIGHT")
         self.width = config.get("WIDTH")
         self.algo = config.get("ALGORITHM")
@@ -83,7 +83,7 @@ class MazeGenerator():
 
     def apply_42_pattern(self) -> None:
         if not all([self.width, self.height, self.maze, self.exit, self.see]):
-            return
+            return None
 
         pattern = [
                     "1000111",
@@ -94,9 +94,14 @@ class MazeGenerator():
                     ]
         pattern_height = len(pattern)
         pattern_width = len(pattern[0])
-
-        offset_x = (self.width - 7) // 2
-        offset_y = (self.height - 5) // 2
+        if self.width is not None:
+            offset_x = (self.width - 7) // 2
+        else:
+            return None
+        if self.height is not None:
+            offset_y = (self.height - 5) // 2
+        else:
+            return None
 
         for py in range(pattern_height):
             for px in range(pattern_width):
@@ -106,6 +111,8 @@ class MazeGenerator():
                     if not (0 <= real_x < self.width and
                             0 <= real_y < self.height):
                         continue
+                    if self.entry is None or self.exit is None:
+                        return None
                     if (real_x, real_y) == tuple(self.entry) or\
                        (real_x, real_y) == tuple(self.exit):
                         raise ValueError("Entry or exit must be "
@@ -165,7 +172,7 @@ class MazeGenerator():
         if not self.entry:
             return None
         current = (self.entry[0], self.entry[1])
-        stack: List[tuple] = []
+        stack: List[tuple[int, int]] = []
         self.see[current[1]][current[0]] = True
         self.solution = []
 

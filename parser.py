@@ -34,7 +34,7 @@ def extraction_config(entry: str) -> Dict[str, Any]:
     return data
 
 
-def config_validator(data: dict) -> Dict[str, Any]:
+def config_validator(data: dict[str, Any]) -> Dict[str, Any]:
     config: Dict[str, Any] = {}
 
     try:

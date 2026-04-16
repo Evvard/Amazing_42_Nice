@@ -60,6 +60,8 @@ def config_validator(data: dict[str, Any]) -> Dict[str, Any]:
         value_str = str(entry).replace('.', ',')
         parts = value_str.split(',')
         value_en: List[int] = [int(parts[0]), int(parts[1])]
+        if len(value_en) > 2:
+            raise Exception("too many argument for entry")
         if value_en[0] < 0 or value_en[0] > 100:
             raise ValueError("Out of range, error")
         if value_en[1] < 0 or value_en[1] > 100:
@@ -75,6 +77,8 @@ def config_validator(data: dict[str, Any]) -> Dict[str, Any]:
         value_str = str(exi_t).replace('.', ',')
         value_ex = value_str.split(',')
         value_exit: List[int] = [int(value_ex[0]), int(value_ex[1])]
+        if len(value_exit) > 2:
+            raise Exception("too many argument for exit")
         if value_exit[0] < 0 or value_exit[0] > 100:
             raise ValueError
         if value_exit[1] < 0 or value_exit[1] > 100:
@@ -103,7 +107,6 @@ def config_validator(data: dict[str, Any]) -> Dict[str, Any]:
 
     try:
         algo = data.get("ALGORITHM")
-        # a modifier en fonction de l'algo
         if algo == "bactracking":
             config.update({"ALGORITHM": algo})
         else:

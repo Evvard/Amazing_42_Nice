@@ -32,6 +32,7 @@ def main() -> None:
     path_visible = False
     colors_rotated = False
     bad_choice = False
+    time_animation = False
 
     while True:
         height = config.get("HEIGHT")
@@ -42,7 +43,8 @@ def main() -> None:
             print("\n42 not appplied, height or width are too small\n")
         display(maze_brut, solution, path_visible,
                 config.get("ENTRY", [0, 0]),
-                config.get("EXIT", [0, 0]), colors_rotated)
+                config.get("EXIT", [0, 0]), colors_rotated,
+                time_animation)
         if bad_choice:
             print("Wrong input, please enter a number between 1 and 4.")
             bad_choice = False
@@ -51,9 +53,10 @@ def main() -> None:
         print("1. Re-generate a new maze")
         print("2. Show/Hide Path")
         print("3. Rotate maze colors")
-        print("4. Quit")
+        print("4. Stop/start time animation")
+        print("5. Quit")
 
-        choice = input("Choice?(1-4): ")
+        choice = input("Choice?(1-5): ")
         if choice == "1":
             config = config_validator(brut_data_from_config_txt)
             maze = MazeGenerator(config)
@@ -67,6 +70,8 @@ def main() -> None:
         elif choice == "3":
             colors_rotated = not colors_rotated
         elif choice == "4":
+            time_animation = not time_animation
+        elif choice == "5":
             break
         else:
             bad_choice = True

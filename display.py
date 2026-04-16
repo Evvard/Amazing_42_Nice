@@ -1,4 +1,5 @@
 from typing import List, Tuple
+from time import sleep
 
 
 def transform_path(path: List[str],
@@ -19,10 +20,11 @@ def transform_path(path: List[str],
 
 
 def display(maze: List[List[int]], path: List[str], show_path: bool,
-            entry: List[int], exit_pos: List[int], change_color: bool) -> None:
+            entry: List[int], exit_pos: List[int], change_color: bool,
+            time_animation: bool) -> None:
 
     W = "\033[47m  \033[0m" if not change_color else "\033[46m  \033[0m"
-    MOTIF_W = "\033[100m  \033[0m"
+    MOTIF_W = "\033[100m  \033[0m" if not change_color else "\033[47m  \033[0m"
     START = "\033[45m  \033[0m"
     EXIT = "\033[41m  \033[0m"
     PATH = "\033[42m  \033[0m"
@@ -78,4 +80,8 @@ def display(maze: List[List[int]], path: List[str], show_path: bool,
             bot_line += south_color + corner_color
 
         print(mid_line)
+        if time_animation:
+            sleep(0.5)
+        else:
+            pass
         print(bot_line)
